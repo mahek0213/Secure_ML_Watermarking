@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes import upload, verify
 from fastapi.middleware.cors import CORSMiddleware
+from app.routes import revert
 
 app = FastAPI(title="Secure Model Watermarking API")
 
@@ -18,6 +19,7 @@ app.add_middleware(
 
 app.include_router(upload.router)
 app.include_router(verify.router)
+app.include_router(revert.router)
 
 @app.get("/")
 def root():

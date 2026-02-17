@@ -8,11 +8,11 @@ def watermark_knn_model(model_path: str):
     if not hasattr(model, "_fit_X"):
         raise ValueError("Not a KNN model")
 
-    # Generate watermark
+   
     watermark_bits = np.random.randint(0, 2, size=4).tolist()
     sample_indices = list(range(len(watermark_bits)))
 
-    # ✅ Store watermark INSIDE the model (metadata)
+    
     model._watermark_bits = watermark_bits
     model._watermark_indices = sample_indices
 

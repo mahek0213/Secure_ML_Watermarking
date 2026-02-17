@@ -8,7 +8,6 @@ def watermark_tree_model(model_path: str):
     except Exception as e:
         raise ValueError(f"Model loading failed: {e}")
 
-    # ---------------- Detect tree ----------------
     if hasattr(model, "tree_"):
         tree = model.tree_
 
@@ -18,7 +17,6 @@ def watermark_tree_model(model_path: str):
     else:
         raise ValueError("Model is not tree-based (DecisionTree/RandomForest)")
 
-    # ---------------- Get leaf indices safely ----------------
     leaf_indices = np.where(tree.children_left == -1)[0]
 
     if len(leaf_indices) == 0:
@@ -26,7 +24,6 @@ def watermark_tree_model(model_path: str):
 
     leaf_indices = sorted(leaf_indices.tolist())
 
-    # ---------------- Limit watermark size ----------------
     watermark_len = min(4, len(leaf_indices))
 
     watermark_bits = []
@@ -39,7 +36,6 @@ def watermark_tree_model(model_path: str):
         watermark_bits.append(bit)
         used_leaf_indices.append(leaf)
 
-        # SAFELY modify only sign (not magnitude)
         value = tree.value[leaf]
 
         if bit == 1:
@@ -47,7 +43,6 @@ def watermark_tree_model(model_path: str):
         else:
             tree.value[leaf] = -np.abs(value)
 
-    # ---------------- Save model ----------------
     output_path = model_path.replace(".pkl", "_watermarked.pkl")
     joblib.dump(model, output_path)
 

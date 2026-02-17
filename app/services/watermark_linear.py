@@ -14,11 +14,11 @@ def watermark_linear_model(model_path: str):
 
     coef = model.coef_.copy()
 
-    # Generate watermark
+   
     watermark_id = str(uuid.uuid4())
     watermark_bits = np.random.randint(0, 2, size=min(8, coef.size))
 
-    # Embed watermark in first N coefficients
+  
     for i, bit in enumerate(watermark_bits):
         if bit == 1:
             coef.flat[i] = abs(coef.flat[i]) + 1e-4
